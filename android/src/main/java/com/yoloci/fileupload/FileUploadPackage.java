@@ -30,7 +30,7 @@ public class FileUploadPackage implements ReactPackage {
         return modules;
     }
 
-    @Override
+    // RN > 0.45.0 depricated
     public List<Class<? extends JavaScriptModule>> createJSModules() {
         return Collections.emptyList();
     }
