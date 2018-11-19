@@ -23,6 +23,9 @@ import java.io.FileInputStream;
 
 import org.json.JSONObject;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+
 public class FileUploadModule extends ReactContextBaseJavaModule {
 
     @Override
@@ -54,7 +57,8 @@ public class FileUploadModule extends ReactContextBaseJavaModule {
 
 
 
-        HttpURLConnection connection = null;
+       // HttpURLConnection connection = null;
+        HttpsURLConnection connection = null;
         DataOutputStream outputStream = null;
         DataInputStream inputStream = null;
         URL connectURL = null;
@@ -65,12 +69,15 @@ public class FileUploadModule extends ReactContextBaseJavaModule {
         int maxBufferSize = 1*1024*1024;
 
         try {
-
+            SSLContext sc = SSLContext.getInstance("TLSv1.2"); //$NON-NLS-1$
+            sc.init(null, null, new java.security.SecureRandom());
             connectURL = new URL(uploadUrl);
 
 
-            connection = (HttpURLConnection) connectURL.openConnection();
-
+           //connection = (HttpURLConnection) connectURL.openConnection();
+            connection = (HttpsURLConnection) connectURL.openConnection();
+            connection.setSSLSocketFactory(sc.getSocketFactory());
+            
             // Allow Inputs &amp; Outputs.
             connection.setDoInput(true);
             connection.setDoOutput(true);
